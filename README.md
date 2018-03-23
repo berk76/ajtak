@@ -1,5 +1,5 @@
-# Aják
-Textová hra z prostøedí svìta cvièenıch opic, aneb den ajáka.
+# AjÅ¥Ã¡k
+TextovÃ¡ hra z prostÃ¸edÃ­ svÃ¬ta cviÃ¨enÃ½ch opic, aneb den ajÅ¥Ã¡ka.
 
 ## Jak zkompilovat
 `$ make`
