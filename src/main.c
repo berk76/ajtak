@@ -1,5 +1,5 @@
 /*
-*       Textovka.c
+*       main.c
 *       14.7.2015
 *
 */
@@ -7,12 +7,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <malloc.h>
-//#include <spectrum.h>
 
-#define BLEN 30
-#define BLEN2 255
+
+#define BLEN 256
 #define SCREEN_WIDTH 32
+
 
 typedef struct {
         int id;
@@ -28,12 +27,10 @@ typedef struct {
         char can_get_item;
 } OPTION;
 
+
 char items[BLEN];
-
-/* method #1 - heap pointer statically compiled as part of the binary */
-long heap;
-
 char name[] = "   ---===*** Ajtak ***===---";
+int croom = 1;
 
 ROOM map[] = {
         {0, "R.I.P.", ""},
@@ -51,28 +48,19 @@ ROOM map[] = {
             "(J)it zpatky a zamknout,Jj,2,,;"}
         };
         
-int croom = 1;
+
 
 static int getOption(char *opts);
 static void myprint(char *s);
-static void mystrncat(char * buff, int buflen, char *addition);
 static void insert_item(char c);
 
-int main(void)
-{
+
+int main(void) {
         
-        int c;
-          
-        mallinit();              /* heap cleared to empty */
-        //sbrk(30000,2000);        /* add 2000 bytes from addresses 30000-31999 inclusive to the heap */
-        sbrk(65000,536);         /* add 536 bytes from addresses 65000-65535 inclusive to the heap  */
-        printf("%c%c", 1, 32);   /* 32 characters */
         items[0] = '\0';
         
         while (1) {
-                
-                printf("%c", 12);
-                printf("%s\n\n", name);
+                printf("\n\n%s\n\n", name);
                 myprint(map[croom].description);
                 
                 printf("\n\n\n%s", "Muzes:\n");
@@ -82,7 +70,7 @@ int main(void)
 }
 
 int getOption(char *opts) {
-        char buff[BLEN], buff2[BLEN2], *p;
+        char buff[BLEN], buff2[BLEN], *p;
         int size, x, y, c, result;
         OPTION *o;
         
@@ -103,7 +91,9 @@ int getOption(char *opts) {
         y = 0;
         buff[0] = '\0';
         p = opts;
+        
         while (*p != '\0') {
+        
                 if (*p == ';') {
                         o[y].can_get_item = *buff;
                         x = 0;
@@ -112,6 +102,7 @@ int getOption(char *opts) {
                         p++;
                         continue;
                 }
+                
                 if (*p == ',') {
                         switch (x) {
                                 case 0: strcpy(o[y].description, buff);
@@ -121,32 +112,36 @@ int getOption(char *opts) {
                                 case 2: o[y].room = atoi(buff);
                                         break;
                                 case 3: o[y].has_to_have_item = *buff;
-                                        break 
+                                        break; 
                         }
                         x++;
                         buff[0] = '\0';
                         p++;
                         continue;
                 }
+                
                 if (strlen(buff) + 1 == BLEN) {
                         p++;
                         continue;
-                } 
+                }
+                 
                 buff[strlen(buff) + 1] = '\0';
                 buff[strlen(buff)] = *p; 
                 p++;
         }
         
         buff2[0] = '\0';
+        
         for (y = 0; y < size; y++) {
                 if ((o[y].has_to_have_item == '\0' && o[y].can_get_item == '\0') 
                  || (o[y].has_to_have_item == '\0' && strchr(items, o[y].can_get_item) == NULL)
                  || (o[y].has_to_have_item != '\0' && strchr(items, o[y].has_to_have_item) != NULL)
                  ) {
-                        mystrncat(buff2, BLEN2, o[y].description);
-                        mystrncat(buff2, BLEN2, " ");
+                        strncat(buff2, o[y].description, BLEN);
+                        strncat(buff2, " ", BLEN);
                 }
         }
+        
         myprint(buff2);
         
         result = 0;
@@ -200,23 +195,6 @@ void myprint(char *s) {
                 p1++;
                 i++;
         }
-}
-
-
-void mystrncat(char * buff, int buflen, char *addition) {
-        int result;
-        char *p;
-        
-        result = 0;
-        buflen = buflen - strlen(buff);
-        p = buff + strlen(buff);
-        while (buflen != 0 && *addition != '\0') {
-                *p = *addition;
-                p++;
-                addition++;
-                buflen--;                
-        }
-        *p = '\0';
 }
 
 
