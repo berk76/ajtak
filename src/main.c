@@ -143,6 +143,7 @@ int getOption(char *opts) {
         }
         
         myprint(buff2);
+        printf("\n\n>");
         
         result = 0;
         while (result <= 0) {
