@@ -1,5 +1,5 @@
 # Ajťák
-Textová hra z prostøedí svìta cvièených opic, aneb den ajťáka.
+Textová hra z prostředí světa cvičených opic, aneb den ajťáka.
 
 ## Jak zkompilovat
 `$ make`
