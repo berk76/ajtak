@@ -9,7 +9,7 @@
 *       the Free Software Foundation; either version 3 of the License, or
 *       (at your option) any later version. <http://www.gnu.org/licenses/>
 *
-*       (c) 14.7.2015
+*       (c) 14.7.2015 Veterans of ELIT
 *
 */
 

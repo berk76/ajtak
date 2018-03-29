@@ -9,7 +9,7 @@
 *       the Free Software Foundation; either version 3 of the License, or
 *       (at your option) any later version. <http://www.gnu.org/licenses/>
 *
-*       (c) 14.7.2015
+*       (c) 14.7.2015 Veterans of ELIT
 *
 */
 
@@ -22,11 +22,11 @@
 
 /* way */
 typedef struct {
-        char description[BLEN];
-        char key[BLEN];
-        int room;
-        char has_to_have_item;
-        char can_get_item;
+        char description[BLEN];         /* way description */
+        char key[BLEN];                 /* key to press */
+        int room;                       /* room you will enter to */
+        char has_to_have_item;          /* item you have to have */
+        char can_get_item;              /* item you can get */
 } OPTION;
 
 
