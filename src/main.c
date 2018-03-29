@@ -22,7 +22,6 @@
 
 
 char items[BLEN];
-char name[] = "   ---===*** Ajtak ***===---";
 int croom = 1;
 
 
@@ -40,20 +39,15 @@ int main(void) {
         while (1) {
                 printf("\n\n%s\n\n", name);
                 myprint(map[croom].description);
-                
+
                 printf("\n\n\n%s", "Muzes:\n");
-                
+
                 /* print options */
                 getOptions(&o, &size, map[croom].ways);
                 buff[0] = '\0';
                 for (i = 0; i < size; i++) {
-                        if ((o[i].has_to_have_item == '\0' && o[i].can_get_item == '\0') 
-                                || (o[i].has_to_have_item == '\0' && strchr(items, o[i].can_get_item) == NULL)
-                                || (o[i].has_to_have_item != '\0' && strchr(items, o[i].has_to_have_item) != NULL)
-                         ) {
-                                strncat(buff, o[i].description, BLEN);
-                                strncat(buff, " ", BLEN);
-                        }
+                        strncat(buff, o[i].description, BLEN);
+                        strncat(buff, " ", BLEN);
                 }
 
                 myprint(buff);
@@ -67,13 +61,13 @@ int main(void) {
                                 if (strchr(o[i].key, c) != NULL) {
                                         choice = o[i].room;
                                         if (o[i].can_get_item != '\0') {
-                                                insert_item(o[i].can_get_item);        
+                                                insert_item(o[i].can_get_item);
                                         }
                                         break;
                                 }
                         }
                 }
-                
+
                 free((void *) o);
                 croom = choice; 
         }
@@ -85,36 +79,31 @@ void getOptions(OPTION **o, int *size, char *opts) {
         char buff[BLEN], *p;
         int x, y;
 
+        /* check for size */
         *size = 0;
         p = opts;
         while (*p != '\0') {
-                if (*p == ';') (*size)++;
+                if (*p == ';') 
+                        (*size)++;
                 p++;
         }
 
+        /* allocate memeory */
         *o = (OPTION *) malloc(sizeof(OPTION) * (*size));
         if (*o == NULL) {
                 printf("FATAL: Cannot allocate memory\n");
                 exit(0);
         }
 
+
+        /* parse options */
         x = 0;
         y = 0;
         buff[0] = '\0';
         p = opts;
 
         while (*p != '\0') {
-
-                if (*p == ';') {
-                        (*o)[y].can_get_item = *buff;
-                        x = 0;
-                        y++;
-                        buff[0] = '\0';
-                        p++;
-                        continue;
-                }
-
-                if (*p == ',') {
+                if ((*p == ',') || (*p == ';')) {
                         switch (x) {
                                 case 0: strcpy((*o)[y].description, buff);
                                         break;
@@ -123,9 +112,34 @@ void getOptions(OPTION **o, int *size, char *opts) {
                                 case 2: (*o)[y].room = atoi(buff);
                                         break;
                                 case 3: (*o)[y].has_to_have_item = *buff;
+                                        break;
+                                case 4: (*o)[y].can_get_item = *buff;
                                         break; 
                         }
-                        x++;
+                        
+                        switch (*p) {
+                                case ',':
+                                        x++;
+                                        break;
+                                case ';':
+                                        x = 0;
+                                        if (    /* no conditions or */
+                                                ((*o)[y].has_to_have_item == '\0') ||
+                                                /* you have to have item and you have it actually */
+                                                ((*o)[y].has_to_have_item != '\0' && strchr(items, (*o)[y].has_to_have_item) != NULL)
+                                           ) {
+
+                                                if (    /* no item or */
+                                                        ((*o)[y].can_get_item == '\0') ||
+                                                        /* you can have item and you don't have it yet */ 
+                                                        ((*o)[y].can_get_item != '\0' && strchr(items, (*o)[y].can_get_item) == NULL)
+                                                   ) {
+                                                        y++;
+                                                }
+                                        }
+                                        break;
+                        }
+
                         buff[0] = '\0';
                         p++;
                         continue;
@@ -141,6 +155,7 @@ void getOptions(OPTION **o, int *size, char *opts) {
                 p++;
         }
 
+        *size = y;
         return;
 }
 

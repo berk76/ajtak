@@ -18,6 +18,8 @@
 
 #include "main.h"
 
+char *name = "   ---===*** Ajtak ***===---";
+
 ROOM map[] = {
         {0, "R.I.P.", ""},
         {1, "Sedis u sveho pracovniho stolu a ospale koukas do monitoru. Naproti pres stul bezi vetrak. Venku je 30 stupnu.", 
