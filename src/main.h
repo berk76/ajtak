@@ -27,6 +27,7 @@ typedef struct {
         int room;                       /* room you will enter to */
         char has_to_have_item;          /* item you have to have */
         char can_get_item;              /* item you can get */
+        char item_description[BLEN];    /* description of item */
 } OPTION;
 
 

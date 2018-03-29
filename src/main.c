@@ -39,11 +39,20 @@ int main(void) {
         while (1) {
                 printf("\n\n%s\n\n", name);
                 myprint(map[croom].description);
+                
+                getOptions(&o, &size, map[croom].ways);
 
-                printf("\n\n\n%s", "Muzes:\n");
+                /* print item descriptions */
+                for (i = 0; i < size; i++) {
+                        if (o[i].item_description[0] != '\0') {
+                                printf("\n");
+                                myprint(o[i].item_description);
+                        }
+                }
 
                 /* print options */
-                getOptions(&o, &size, map[croom].ways);
+                printf("\n\n\n%s", "Muzes:\n");
+
                 buff[0] = '\0';
                 for (i = 0; i < size; i++) {
                         strncat(buff, o[i].description, BLEN);
@@ -114,9 +123,11 @@ void getOptions(OPTION **o, int *size, char *opts) {
                                 case 3: (*o)[y].has_to_have_item = *buff;
                                         break;
                                 case 4: (*o)[y].can_get_item = *buff;
+                                        break;
+                                case 5: strcpy((*o)[y].item_description, buff);
                                         break; 
                         }
-                        
+
                         switch (*p) {
                                 case ',':
                                         x++;
