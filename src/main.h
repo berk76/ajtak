@@ -17,7 +17,10 @@
 #define _MAIN_H_
 
 #define BLEN 256
+
+#ifndef SCREEN_WIDTH
 #define SCREEN_WIDTH 32
+#endif
 
 
 /* way */

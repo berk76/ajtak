@@ -1,5 +1,5 @@
 CC = cc
-CFLAGS = -O2 -Wall -c -o $@
+CFLAGS = -O2 -Wall -c -o $@ -D SCREEN_WIDTH=80
 
 
 all: ajtak
